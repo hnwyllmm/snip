@@ -281,8 +281,8 @@ protected:
 // example
 struct list_node_t
 {
-    list_node_t *next_in_list;
-    list_node_t **prev_in_list;
+    list_node_t *next_in_list = NULL;
+    list_node_t **prev_in_list = NULL;
 };
 
 typedef I_P_List<list_node_t, 
@@ -307,5 +307,7 @@ list_t::Iterator iter(g_list);
 for (list_node_t *list_node = iter++; list_node; list_node=iter++) // NOTE: 如果g_list是空，那么不能直接使用++iter，只能使用iter++。++iter不会判断链表是否会空
        {// do something }
        
-
+// 判断某个节点是否在链表中
+extern list_node_t list_node;
+return list_node.prev_in_list != NULL;	
 
