@@ -2,6 +2,8 @@
 #define MDB_PLIST_H
 /* copy from MariaDB(sql/sql_plist.h) */
 
+#define swap_variables(t, a, b) do { t dummy; dummy= a; a= b; b= dummy; } while(0)
+
 template <typename T, typename L>
 class I_P_List_iterator;
 class I_P_List_null_counter;
