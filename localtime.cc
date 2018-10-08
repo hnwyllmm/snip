@@ -90,3 +90,52 @@ struct tm * localtime_r(const time_t *srctime,struct tm *tm_time)
     tm_time->tm_mday = (int)(time);
     return tm_time;
 }
+
+///////////////////////////////////////////////////////////////
+// 另一个算法，看起来更简洁
+void civil_from_days(int z, int& yy, int& mm, int& dd)
+{
+	z += 719468;
+	const int era = (z >= 0 ? z : z - 146096) / 146097;
+	const unsigned doe = static_cast<unsigned>(z - era * 146097);                // [0, 146096]
+	const unsigned yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;  // [0, 399]
+	const int y = static_cast<int>(yoe) + era * 400;
+	const unsigned doy = doe - (365 * yoe + yoe / 4 - yoe / 100);                // [0, 365]
+	const unsigned mp = (5 * doy + 2) / 153;                                     // [0, 11]
+
+	dd = doy - (153 * mp + 2) / 5 + 1;                                           // [1, 31]
+	mm = mp + (mp < 10 ? 3 : -9);                                                // [1, 12]
+			 
+	yy = y + (mm <= 2); /* std::tuple<Int, unsigned, unsigned>(y + (m <= 2), m, d);*/
+}
+
+void civil_from_secs(int64 ts, int& year, int& mon, int& day, int& hour, int& min, int& sec)
+{
+	int days = ts / 86400;
+	int secs = ts % 86400;
+	civil_from_days(days, year, mon, day);
+
+	hour = secs / 3600;
+	min = (secs % 3600) / 60;
+	sec = (secs % 3600) % 60;
+}
+
+// 调用这个函数前必须调用过tzset()
+// 只有year, month, day和hour, min,sec会有效，其它字段不设置
+void my_localtime(int64_t ts, struct tm *_tm)
+{
+	long tz = timezone;
+	ts += tz;
+	int year, mon, day, hour, minute, sec;
+	civil_from_secs(ts, _tm->tm_year, _tm->tm_mon, _tm->tm_mday, _tm->tm_hour, _tm->tm_min, _tm->tm_sec);
+	_tm->tm_year -= 1900;
+	_tm->tm_mon--;
+}
+
+const char * my_strtime(struct tm *_tm, char buf[], int len)
+{
+	snprintf(buf, len, "%04d-%02d-%02d %02d:%02d:%02d",
+		_tm->tm_year+1900, _tm->tm_mon + 1, _tm->tm_mday,
+		_tm->tm_hour, _tm->tm_min, _tm->tm_sec);
+	return buf;
+}
