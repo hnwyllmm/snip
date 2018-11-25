@@ -19,3 +19,4 @@ t11.baidu.com/*
 t12.baidu.com/*
 tpc.googlesyndication.com/*
 wn.pos.baidu.com/*
+ads.csdn.net/*
