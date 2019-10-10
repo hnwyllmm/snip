@@ -3,10 +3,11 @@
 #
 import traceback
 import sys
+
 try:
 	from optparse import OptionParser
 except:
-	pass
+	exit(1)
 
 user_input = None
 
@@ -37,14 +38,14 @@ class end_output_error_t(RuntimeError):
 	def __init__(self, arg):
 		RuntimeError.__init__(self, arg)
 
-class output_helper_t:
+class OutputHelper:
 	'''输出行数过多时，通过这个来多次输出到屏幕'''
-	__count     = 0
+	__count	 = 0
 	__max_lines = 0
 
 	def __init__(self, max_lines = 40):
 		self.__max_lines = max_lines
-		self.__count     = 0
+		self.__count	 = 0
 
 	def outputln(self, value):
 		if self.__count >= self.__max_lines:
@@ -64,9 +65,6 @@ class output_helper_t:
 #
 
 class thread_info_t:
-	tid       = -1
-	pthreadId = -1
-	desc      = []
 
 	def __init__(self, tid, pthreadId):
 		self.tid = tid
@@ -75,23 +73,23 @@ class thread_info_t:
 
 	def __str__(self):
 		res = "tid:" + str(self.tid).rjust(16) + ", pthreadId:" + str(self.pthreadId).rjust(8)
-		res += "    " + ";".join(self.desc)
+		res += "	" + ";".join(self.desc)
 		return res
 
+# 表示栈信息
 class stack_info_t:
-	__index       = 0
-	__thread_info = thread_info_t(0,0)
-	__lines       = []
-	__signature   = None
 
 	def __init__(self, thinfo):
-		self.__thread_info = thinfo
-		self.__lines       = []
-		self.__index       = 0
-		self.__signature   = None
+		self.__thread_info = thinfo   # 线程信息
+		self.__lines	   = []		  # 每行的数据
+		self.__index	   = 0 		  # 在整个stack info列表中第几个
+		self.__signature   = None     # 能唯一标识一个栈(比如把每行的执行EIP地址当做字符串连起来)
 
 	def __str__(self):
 		return str(self.__thread_info) + "\r\n" + "\r\n".join(self.__lines)
+
+	def __len__(self):
+		return len(self.__lines)
 
 	def detail(self, output):
 		output.outputln(str(self.__thread_info))
@@ -135,7 +133,7 @@ class rule_intf_t:
 		"""decide whether the stack is mine """
 		"""keywords: up to down"""
 		key_num   = len(keywords)
-		lines     = si.lines()
+		lines	 = si.lines()
 		stack_num = len(lines)
 
 		if key_num <= 0:
@@ -151,7 +149,7 @@ class rule_intf_t:
 
 		if state == key_num:
 			return True
-		
+
 		return False
 
 ###############################################################################
@@ -170,7 +168,7 @@ class thread_info_intf_t:
 		'''能唯一标识一个栈'''
 		pass
 
-	def get_funcation(self, line):
+	def get_function(self, line):
 		pass
 
 class thread_info_aix_t(thread_info_intf_t):
@@ -210,7 +208,7 @@ class thread_info_aix_t(thread_info_intf_t):
 				ret += line + ';'
 		return ret
 
-	def get_funcation(self, line):
+	def get_function(self, line):
 		strlist = line.split('  ', 2)
 		if len(strlist) < 2:
 			return ''
@@ -265,7 +263,7 @@ class thread_info_linux_t(thread_info_intf_t):
 			ret  += line[begin:end-1] + ';'
 		return ret
 
-	def get_funcation(self, line):
+	def get_function(self, line):
 		start = line.find('in ')
 		if -1 == start:
 			return ''
@@ -294,7 +292,7 @@ class thread_info_gdb_t(thread_info_intf_t):
 		return False
 
 	def thread_info(self, line):
-		
+
 		thinfo = thread_info_t(-1, -1)
 
 		return thinfo
@@ -313,7 +311,7 @@ class thread_info_gdb_t(thread_info_intf_t):
 			ret  += line[begin:end-1] + ';'
 		return ret
 
-	def get_funcation(self, line):
+	def get_function(self, line):
 		start = line.find('in ')
 		if -1 == start:
 			return ''
@@ -363,7 +361,7 @@ class thread_info_hpux_t(thread_info_intf_t):
 			ret  += arr[1] + ';'
 		return ret
 
-	def get_funcation(self, line):
+	def get_function(self, line):
 		start = line.find('in ')
 		if -1 == start:
 			return ''
@@ -416,25 +414,23 @@ class stack_anlyse_intf_t:
 		print('unsupported stack format')
 		return None
 
-class stack_parser_t:
-	__file               = ""
-	__stack_list         = []
-	__thread_info_parser = thread_info_intf_t()
-	__stack_summary      = {}
-
-	__thread_info_intf   = None
+class StackParser:
 
 	def __init__(self, file="pstack.txt"):
-		self.__file = file
+		self.__file               = file
+		self.__stack_list         = []
+		self.__thread_info_parser = thread_info_intf_t()
+		self.__stack_summary      = {}
+		self.__thread_info_intf   = None
 
 	def __str__(self):
 		return ""
 
 	def __preparse(self):
 		self.__stack_list = []
-		lines             = []
-		si                = None
-		thinfo            = thread_info_t(0, 0)
+		lines			 = []
+		si				= None
+		thinfo			= thread_info_t(0, 0)
 
 		try:
 			f = open(self.__file)
@@ -459,12 +455,12 @@ class stack_parser_t:
 						si.index(len(self.__stack_list) + 1)
 						self.__stack_list.append(si)
 
-					thinfo = self.__thread_info_intf.thread_info(line)				
-					
-					si     = stack_info_t(thinfo)
+					thinfo = self.__thread_info_intf.thread_info(line)
+
+					si	 = stack_info_t(thinfo)
 					lines  = []
 					lines.append(line)
-				
+
 			f.close()
 
 			if lines and si:
@@ -506,19 +502,19 @@ class stack_parser_t:
 			return
 
 		try:
-			output = output_helper_t()
-			sorted_stack = sorted(self.get_stack_summary().values(), key=lambda d:d[1], reverse=True)
+			output = OutputHelper()
+			sorted_stack = sorted(self.get_stack_summary().values(), key=lambda x: (x[1], len(x[0])), reverse=True)
 			for stack in sorted_stack:
 				times  = stack[1]
 				outputstr = str(times) + ' time'
 				if times > 1:
 					outputstr += 's'
-					
+
 				if file != None:
 					file.write(outputstr + "\n")
 				else:
 					output.outputln(outputstr)
-					
+
 				si = stack[0]
 				for line in si.lines():
 					if file != None:
@@ -531,31 +527,60 @@ class stack_parser_t:
 				else:
 					output.outputln('')
 
+			if self.__file:
+				print("input file: " + self.__file)
+
 			if file != None:
 				print("output: " + filename)
 		except end_output_error_t:
 			pass
-		
+
 ###############################################################################
 
 if __name__  == "__main__":
+	has_commands = True
+
+	try:
+		import commands
+	except:
+		has_commands = False
+		print ("cannot load 'commands' module")
 
 	init_system_env()
 
 	parser  = None
 	try:
 		options_parser = OptionParser()
-		options_parser.add_option('-f', '--file', action='store', 
+		options_parser.add_option('-f', '--file', action='store',
 			type='string', dest='file', default='pstack.txt', help='pstack file')
-		options_parser.add_option('-o', '--output', action='store',	type='string', 
+		options_parser.add_option('-o', '--output', action='store',	type='string',
 			dest='output', help='output file. if not given, it will output to the console')
+		if has_commands:
+			options_parser.add_option('-p', '--pid', action='store',	type='int',
+				dest='pid', help='pid of process.')
 
 		(options, args) = options_parser.parse_args(sys.argv[1:])
 
 		stack_file = options.file
-		parser = stack_parser_t(stack_file)
+
+		if has_commands and options.pid != None:
+			(result, pstack_content) = commands.getstatusoutput('pstack ' + str(options.pid))
+			if 0 != result:
+				print(pstack_content)
+				exit(1)
+
+			with open(stack_file, 'w') as pstack_fd:
+				pstack_fd.write(pstack_content)
+				pstack_fd.close()
+
+		if options.output == None and options.pid != None:
+			options.output = str(options.pid) + '.st'
+
+		parser = StackParser(stack_file)
 		parser.parse()
 		parser.summary(options.output)
 	except Exception as ex:
 		print("exception: " + str(ex))
-		traceback.print_exc() 
+		traceback.print_exc()
+
+	exit(0)
