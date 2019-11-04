@@ -380,7 +380,6 @@ class thread_info_hpux_t(thread_info_intf_t):
 		return func
 
 class stack_anlyse_intf_t:
-	__os_type = ''
 
 	def __init__(self):
 		self.__os_type = ''
