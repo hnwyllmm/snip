@@ -1,5 +1,5 @@
 // filter_pattern: ^aimdb.*bin$
-int fetch_file(const char *path, const char *filter_pattern, std::vector<std::string> &files)
+int list_file(const char *path, const char *filter_pattern, std::vector<std::string> &files)
 {
 	regex_t reg;
 	if (filter_pattern)
