@@ -1,3 +1,5 @@
+#include <sys/stat.h>
+
 static inline bool is_dir(const char *path)
 {
     struct stat st;
