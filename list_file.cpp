@@ -1,4 +1,12 @@
-// filter_pattern: ^aimdb.*bin$
+#include <regex.h>
+#include <dirent.h>
+
+#include <vector>
+
+/**
+ * 列出指定文件夹下符合指定模式的所有文件
+ * @param filter_pattern  示例 ^aimdb.*bin$
+ */
 int list_file(const char *path, const char *filter_pattern, std::vector<std::string> &files)
 {
 	regex_t reg;
