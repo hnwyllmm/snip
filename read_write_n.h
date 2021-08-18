@@ -24,7 +24,7 @@ int readn(int fd, void *buf, int size)
 	while (size > 0)
 	{
 		const ssize_t ret = ::read(fd, tmp, size);
-		if (ret >= 0)
+		if (ret > 0)
 		{
 			tmp  += ret;
 			size -= ret;
