@@ -6,6 +6,8 @@
  *  https://www.gnu.org/software/libc/manual/html_node/Noncanonical-Input.html
  *  https://www.gnu.org/software/libc/manual/html_node/Limits-for-Files.html
  *  man termios
+ * NOTE: **** 使用这个设置后，不能正确的处理退格键 ****
+ *  建议直接使用 readline 库
  */
 int set_terminal_attr() {
   int fd = STDIN_FILENO;
