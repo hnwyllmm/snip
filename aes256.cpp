@@ -14,7 +14,7 @@ int AES::reset()
 {
   EVP_CIPHER_CTX_cleanup(&_cipher_ctx);
   EVP_CIPHER_CTX_init(&_cipher_ctx);
-  return OMS_OK;
+  return 0;
 }
 
 int AES::encrypt(const char* key, const char* plain_text, int plain_text_len, char** encrypted, int& encrypted_len)
@@ -24,14 +24,14 @@ int AES::encrypt(const char* key, const char* plain_text, int plain_text_len, ch
   int ret = EVP_EncryptInit_ex(&_cipher_ctx, EVP_aes_256_cbc(), nullptr, (const unsigned char*)key, iv_copy);
   if (ret != 1) {
     LOG_ERROR << "Failed to init encrypt, return=" << ret;
-    return OMS_FAILED;
+    return -1;
   }
 
   const int buffer_len = plain_text_len + EVP_MAX_BLOCK_LENGTH;
   unsigned char* buffer = (unsigned char*)malloc(buffer_len);
   if (nullptr == buffer) {
     LOG_ERROR << "Failed to alloc memory. size=" << buffer_len;
-    return OMS_FAILED;
+    return -1;
   }
 
   int used_buffer_len = 0;
@@ -39,7 +39,7 @@ int AES::encrypt(const char* key, const char* plain_text, int plain_text_len, ch
   if (ret != 1) {
     LOG_ERROR << "Failed to encrypt. returned=" << ret;
     free(buffer);
-    return OMS_FAILED;
+    return -1;
   }
 
   int final_buffer_len = 0;
@@ -47,13 +47,13 @@ int AES::encrypt(const char* key, const char* plain_text, int plain_text_len, ch
   if (ret != 1) {
     LOG_ERROR << "Failed to encrypt(final). returned=" << ret;
     free(buffer);
-    return OMS_FAILED;
+    return -1;
   }
 
   *encrypted = (char*)buffer;
   encrypted_len = used_buffer_len + final_buffer_len;
 
-  return OMS_OK;
+  return 0;
 }
 
 int AES::decrypt(const char* key, const char* encrypted, int encrypted_len, char** plain_text, int& plain_text_len)
@@ -63,13 +63,13 @@ int AES::decrypt(const char* key, const char* encrypted, int encrypted_len, char
   int ret = EVP_DecryptInit_ex(&_cipher_ctx, EVP_aes_256_cbc(), nullptr, (const unsigned char*)key, iv_copy);
   if (ret != 1) {
     LOG_ERROR << "Failed to init encrypt, return=" << ret;
-    return OMS_FAILED;
+    return -1;
   }
 
   unsigned char* buffer = (unsigned char*)malloc(encrypted_len);
   if (nullptr == buffer) {
     LOG_ERROR << "Failed to alloc memory. size=" << encrypted_len;
-    return OMS_FAILED;
+    return -1;
   }
   memset(buffer, 0, encrypted_len);
 
@@ -78,7 +78,7 @@ int AES::decrypt(const char* key, const char* encrypted, int encrypted_len, char
   if (ret != 1) {
     LOG_ERROR << "Failed to decrypt. return=" << ret;
     free(buffer);
-    return OMS_FAILED;
+    return -1;
   }
 
   int final_buffer_len = 0;
@@ -86,10 +86,10 @@ int AES::decrypt(const char* key, const char* encrypted, int encrypted_len, char
   if (ret != 1) {
     LOG_ERROR << "Failed to decrypt(final). return=" << ret;
     free(buffer);
-    return OMS_FAILED;
+    return -1;
   }
 
   *plain_text = (char*)buffer;
   plain_text_len = used_buffer_len + final_buffer_len;
-  return OMS_OK;
+  return 0;
 }
