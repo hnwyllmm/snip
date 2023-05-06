@@ -13,16 +13,15 @@ body:
           required: true
         - label: Please try full text in English and attach precise description.
           required: true
-  - type: textarea
+  - type: markdown
     attributes:
       label: Environment
       description: |
         Environment Details sometimes important 
       value: |
-        - OB Version(`observer -V`):
-        - Hardware parameter(`lscpu && uname -a`): 
-        - Others
-      render: markdown
+        ### OB Version(`observer -V`):
+        ### Hardware parameter(`uname -a && lscpu`): 
+        ### Others
     validations:
       required: false
   - type: textarea
