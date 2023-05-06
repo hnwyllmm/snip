@@ -20,9 +20,11 @@ body:
         Environment Details sometimes important 
       value: |
         ### OB Version(`observer -V`):
+        
         ### Hardware parameter(`uname -a && lscpu`): 
+        
         ### Others
-      render: markdown
+        
     validations:
       required: false
   - type: textarea
@@ -39,12 +41,12 @@ body:
   - type: textarea
     attributes:
       label: Expected Behavior
-      description: what you expected.
+      description: What you expected.
     validations:
       required: false
   - type: textarea
     attributes:
-      label: other information
+      label: Other information
       description: Error Log or Core stack or Others
     validations:
       required: false
