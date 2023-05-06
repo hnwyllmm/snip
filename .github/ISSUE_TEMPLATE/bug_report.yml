@@ -2,7 +2,7 @@ name: 🐞 Bug Report
 description: bug report for OceanBase
 title: "[Bug]: <title>"
 labels: ["type: bug"]
-assignees: ''
+assignees: []
 
 body:
   - type: checkboxes
