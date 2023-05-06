@@ -19,11 +19,11 @@ body:
       description: |
         Environment Details sometimes important 
       value: |
-        ### OB Version(`observer -V`):
+        #### OB Version(`observer -V`):
         
-        ### Hardware parameter(`uname -a && lscpu`): 
+        #### Hardware parameter(`uname -a && lscpu`): 
         
-        ### Others
+        #### Others
         
     validations:
       required: false
