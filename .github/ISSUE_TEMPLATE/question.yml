@@ -18,3 +18,22 @@ body:
       description: better to provide some pictures.
     validations:
       required: true
+
+  - type: textarea
+    attributes:
+      label: Environment
+    description: |
+        Environment details sometimes important 
+      value: |
+        #### OB Version(`observer -V`)
+
+        #### Hardware parameter(`uname -a && lscpu`)
+
+        #### Others
+
+  - type: textarea
+    attributes:
+      label: Other information
+      description: Anything others about the question
+    validations:
+      required: false
