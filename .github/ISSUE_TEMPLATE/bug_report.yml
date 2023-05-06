@@ -35,7 +35,7 @@ body:
   - type: textarea
     attributes:
       label: Actual Behavior
-      description: What is the result? picture is allowed
+      description: What is the result? Pictures are allowed
     validations:
       required: true
   - type: textarea
