@@ -24,12 +24,12 @@ body:
       label: Environment
     description: |
         Environment details sometimes important 
-      value: |
-        #### OB Version(`observer -V`)
+    value: |
+      #### OB Version(`observer -V`)
 
-        #### Hardware parameter(`uname -a && lscpu`)
+      #### Hardware parameter(`uname -a && lscpu`)
 
-        #### Others
+      #### Others
 
   - type: textarea
     attributes:
