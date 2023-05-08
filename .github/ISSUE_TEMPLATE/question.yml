@@ -2,7 +2,6 @@ name: 🙋 Question
 description: Ask a question about OceanBase
 title: "[Question]: "
 labels: ["type: question"]
-assignees: []
 body:
   - type: markdown
     attributes:
@@ -24,7 +23,7 @@ body:
       description: |
           Environment details sometimes important 
       value: |
-        #### OB Version(`observer -V`)
+        #### OB Version(`LD_LIBRARY_PATH=../lib:$LD_LIBRARY_PATH ./observer -V`)
 
         #### Hardware parameter(`uname -a`)
 
