@@ -9,7 +9,6 @@ body:
       value: |
         Make sure you have:
         * Searched [GitHub issue](https://github.com/oceanbase/oceanbase/issues)
-        * Searched [Documentation](https://open.oceanbase.com)
 
         If the question is concise and probably has a short answer, asking it in [community Slack](https://join.slack.com/t/oceanbase/shared_invite/zt-1e25oz3ol-lJ6YNqPHaKwY_mhhioyEuw)
   - type: textarea
@@ -27,9 +26,7 @@ body:
       value: |
         #### OB Version(`observer -V`)
 
-        #### Hardware parameter(`uname -a && lscpu`)
-
-        #### Others
+        #### Hardware parameter(`uname -a`)
 
   - type: textarea
     attributes:
