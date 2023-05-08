@@ -21,9 +21,7 @@ body:
       value: |
         #### OB Version(`observer -V`):
         
-        #### Hardware parameter(`uname -a && lscpu`): 
-        
-        #### Others
+        #### Hardware parameter(`uname -a`): 
         
     validations:
       required: false
