@@ -36,7 +36,9 @@ Any information helping to review this pull request.
 -->
 
 ### Release Note
-
+<!--
+A concise release note can help users to understand how your pull request makes difference.
+-->
 
 ### Checklist
 <!--Tick the checkbox(es) below to choose what you have done.-->
