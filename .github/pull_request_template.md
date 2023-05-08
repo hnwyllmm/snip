@@ -1,50 +1,42 @@
 <!--
 Thank you for contributing to **OceanBase**! 
 Please read the [How to Contribute](https://github.com/oceanbase/oceanbase/wiki/how_to_contribute) document **BEFORE** filling this PR.
+
+**If this pull request have a significant impact, please make sure you have discussed with OceanBase group.**
 -->
 
-### What changes were proposed in this pull request?
+### Task Description
 
 <!--
-Please clarify what changes you are proposing.
+The problem you resolved by this pull request.
+You can link the issue via the "close #xxx" or "ref #xxx".
 -->
 
-### Why are the changes needed?
+### Solution Description
 
 <!--
-Please clarify why the changes are needed. For instance,
-  1. If you propose a new feature, clarify the use case for a new feature.
-  2. If you fix a bug, you can clarify why it is a bug.
-
-You can link the issue via the "close" or "ref".
+Please clearly and consice descipt the solution.
 -->
 
-Issue Number: close #
+### Passed Regressions
+<!--
+Unittest, mysql test or test it manually?
+-->
 
-### Will break the compatibility? How if so?
+### Upgrade Compatibility
 
 <!--
-Please make sure it do not break the system compatibility, such as
-  1. SQL grammar changes;
-  2. RPC protocol can't be compatible with previous;
-  3. Storage format; etc.
+Please make sure this is compatible with old version or you should give us upgrading solution.
 -->
 
-
-### Does this PR introduce any user-facing change?
+### Other Info
 
 <!--
-If yes, please clarify the previous behavior and the change this PR proposes - provide the console output, description and/or an example to show the behavior difference if possible.
-If no, write 'No'.
+Any information helping to review this pull request.
 -->
 
-### How was this patch tested?
+### Release Note
 
-<!--
-If tests were added, say they were added here. Please make sure to add some test cases that check the changes thoroughly including negative and positive cases if possible.
-If it was tested in a way different from regular unit tests, please clarify how you tested step by step, ideally copy and paste-able, so that other reviewers can test and check, and descendants can verify in the future.
-If tests were not added, please describe why they were not added and/or why it was difficult to add.
--->
 
 ### Checklist
 <!--Tick the checkbox(es) below to choose what you have done.-->
