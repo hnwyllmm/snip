@@ -19,7 +19,7 @@ body:
       description: |
         Environment Details sometimes important 
       value: |
-        #### OB Version(`observer -V`):
+        #### OB Version(`LD_LIBRARY_PATH=../lib:$LD_LIBRARY_PATH ./observer -V`):
         
         #### Hardware parameter(`uname -a`): 
         
