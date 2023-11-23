@@ -1,9 +1,10 @@
 // nodejs 简单代理
 // 1 安装nodejs  wget https://nodejs.org/dist/v14.15.4/node-v14.15.4-linux-x64.tar.xz 然后解压
-// 2. 设置环境变量 
+// apt install nodejs
+// 2. 使用的机器设置环境变量 
 // http_proxy=http://IP:PORT
 // https_proxy=http://IP:PORT
-// 3 运行脚本  ``node proxy.js``
+// 3 开启服务端运行脚本  ``node proxy.js``  或 nodejs proxy.js
 
 var http = require('http');
 var net = require('net');
