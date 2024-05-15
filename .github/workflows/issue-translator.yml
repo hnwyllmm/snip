@@ -1,5 +1,7 @@
 name: 'issue-translator'
 on: 
+  pull_request_target:
+    types: [opened]
   issue_comment: 
     types: [created]
   issues: 
@@ -9,10 +11,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: usthe/issues-translate-action@v2.7
+      - uses: hnwyllmm/issues-translate-action@main
         with:
-          BOT_GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }} 
-          # Required, input your bot github token
 
           IS_MODIFY_TITLE: true
           # not require, default false, . Decide whether to modify the issue title
